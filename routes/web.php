@@ -19,11 +19,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/upload',[\App\Http\Controllers\ImageUploadController::class,'create'])
+    ->name('upload-design');
+Route::post('/upload',[\App\Http\Controllers\ImageUploadController::class,'upload']);
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['as'=>'admin.','prefix'=>'admin','namespace'=>'Admin','middleware'=>['auth','admin']],function (){
-    Route::get('dashboard','DashboardController@index')->name('dashboard');
-});
-Route::group(['as'=>'author.','prefix'=>'author','namespace'=>'Author','middleware'=>['auth','author']],function (){
-    Route::get('dashboard','DashboardController@index')->name('dashboard');
-});

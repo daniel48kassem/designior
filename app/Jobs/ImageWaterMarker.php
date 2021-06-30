@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+//here we add a text watermark to the image
 class ImageWaterMarker implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -60,5 +61,6 @@ class ImageWaterMarker implements ShouldQueue
             $x += 500;
         }
 
+        $this->save(public_path() . '/baz.jpg');
     }
 }

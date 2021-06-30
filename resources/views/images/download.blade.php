@@ -22,13 +22,8 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="file" name="image" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <a href="{{ route('problems.edit', $problem->id) }}" class="btn btn-xs btn-info pull-right">
-                            <button type="submit" class="btn btn-success">
-                                Upload
-                            </button>
+                        <a href="{{ url('resize-image/'.$image->id.'?width=1280&height=720') }}" class="btn btn-xs btn-info pull-right">
+                            Download 1280*720
                         </a>
                     </div>
                 </div>

@@ -2,29 +2,28 @@
 
 namespace App\Jobs;
 
+use App\Models\Image;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Log;
 
-class ImageResizer implements ShouldQueue
+class ImageDisposale implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $dimensions;
     protected $image;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($image,$dimensions)
+    public function __construct(Image $image)
     {
         $this->image=$image;
-        $this->dimensions=$dimensions;
     }
 
     /**
@@ -34,7 +33,7 @@ class ImageResizer implements ShouldQueue
      */
     public function handle()
     {
-        $img = Image::make($this->image)->resize($this->dimensions['width'], $this->dimensions['height']);
-        $img->save(public_path() . 'converted_images/'.md5('myImage'.time()).'jpg');
+        Log::debug($this->image->id);
+        $this->image->delete();
     }
 }

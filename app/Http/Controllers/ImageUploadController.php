@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ImageResource;
+use App\Jobs\ImageDisposale;
 use App\Jobs\ImageResizer;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ImageUploadController extends Controller
 {
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     */
-    public function create()
+    public function index()
     {
         return view('images.upload');
     }
 
+
     public function upload(Request $request)
     {
-
         $this->validate($request, [
             'image' => ['required', 'mimes:jpeg,png', 'max:2048']
         ]);
@@ -32,45 +29,52 @@ class ImageUploadController extends Controller
         $image_path = $image->getPathname();
         $image_name = time() . preg_replace('/\s+/', '_', strtolower($image->getClientOriginalName()));
 
-        $img=Image::create([
-            'path'=>'uploads/original/'.$image_name
+        $img = Image::create([
+            'path' => 'uploads/original/' . $image_name
         ]);
-        Log::debug($img->path);
 
         $tmp = $image->storeAs('uploads/original', $image_name);
-        return view('images.download')->with('image', $img);
+        //run job which responsible for delete image after 10 minutes from the server
+        // to free space
+//        ImageDisposale::dispatch($img)->delay(now()->addMinutes(10));
+
+//        return response(new ImageResource($img) ,201);
+        return view('images.download')
+            ->with(['image'=>$img,'resolutions'=>Image::RESOLUTIONS]);
     }
 
-    public function resize(Request $request,Image $image)
+    public function resize(Request $request, Image $image)
     {
         $data = $this->validate($request, [
             'height' => ['required'],
             'width' => ['required'],
         ]);
 
-        $height= $data['height'];
+        $height = $data['height'];
         $width = $data['width'];
-        $img = $image->resize(['height'=>$height,'width'=>$width]);
 
-//        $file= public_path(). "/download/info.pdf";
+        $img = $image->resize(['height' => $height, 'width' => $width]);
+//        $this->dispatch($img);
 
-        $headers = array(
-            'Content-Type: image/png',
-        );
-
-//        header('Content-Type: image/png');
-//        return $img->response();
         $headers = [
             'Content-Type' => 'image/jpeg',
-            'Content-Disposition' => 'attachment; filename='. 're',
+            'Content-Disposition' => 'attachment; filename=' . 're',
         ];
-        return response()->stream(function() use ($img) {
+
+//        $headers = [
+//            'Content-Type'        => 'application/jpeg',
+//            'Content-Disposition' => 'attachment; filename="'. $attachment->name .'"',
+//        ];
+
+//        return response()->download($img, 's.jpg', $headers);
+
+//        return response()->stream(function () use ($img) {
+//            echo $img;
+//        }, 200, $headers);
+
+        return response()->streamDownload(function () use ($img) {
             echo $img;
-        }, 200, $headers);
-
-//        return Response::download($img, 'filename.jpg', $headers);
-//        $this->dispatch(new ImageResizer($image,$dimensions));
-
+        }, 'filename',$headers);
     }
 
 }

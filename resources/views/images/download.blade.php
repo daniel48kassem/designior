@@ -22,8 +22,21 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="{{ url('resize-image/'.$image->id.'?width=1280&height=720') }}" class="btn btn-xs btn-info pull-right">
-                            Download 1280*720
+                        @foreach($resolutions as $dimensionElement)
+                            <a href="{{ url('resize-image/'.$image->id.'?width='.$dimensionElement['width'].'&height='.$dimensionElement['height']) }}"
+                               class="btn btn-xs btn-info pull-right">
+                                Download {{$dimensionElement['width']}} * {{$dimensionElement['height']}}
+                            </a>
+                        @endforeach
+
+                        <div class="input-group pull-right sizevalue">
+                            <input type="text" class="form-control">
+                            <input type="text" class="form-control">
+                        </div>
+                        Custom Size
+                        <a href="{{ url('resize-image/'.$image->id.'?width=1280&height=720') }}"
+                           class="btn btn-xs btn-info pull-right">
+                            Download
                         </a>
                     </div>
                 </div>

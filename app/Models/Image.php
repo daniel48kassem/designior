@@ -23,7 +23,7 @@ class Image extends Model
                 $constraint->aspectRatio();
             });
 
-        $img->save(storage_path('converted_images/'.'48.jpg'));
+//        $img->save(storage_path('converted_images/'.'48.jpg'));
         return $img;
     }
 

@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/upload',[\App\Http\Controllers\ImageUploadController::class,'upload']);
 Route::get('/images/{image}/download',[\App\Http\Controllers\ImageUploadController::class,'resize']);
+Route::get('/designer/{user}/images',[\App\Http\Controllers\DesignerImageController::class,'index']);
+Route::get('/images/{image}',[\App\Http\Controllers\ImageController::class,'show']);

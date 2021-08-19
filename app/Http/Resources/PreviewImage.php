@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
-class Image extends JsonResource
+class PreviewImage extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +20,7 @@ class Image extends JsonResource
                 'id'=>$this->id,
                 'type'=>'images',
                 'attributes'=>[
-                    'url'=>url($this->path),
+                    'url'=>url(Storage::url($this->preview_image)),
                 ],
             ]
         ];

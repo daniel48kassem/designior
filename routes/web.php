@@ -19,10 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/upload',[\App\Http\Controllers\ImageUploadController::class,'index'])
-    ->name('upload-design');
-
-Route::get('/resize-image/{image}',[\App\Http\Controllers\ImageUploadController::class,'resize']);
-Route::post('/upload',[\App\Http\Controllers\ImageUploadController::class,'upload']);
+//Route::get('/upload',[\App\Http\Controllers\ImageUploadController::class,'index'])
+//    ->name('upload-design');
+//
+//Route::get('/resize-image/{image}',[\App\Http\Controllers\ImageUploadController::class,'resize']);
+//Route::post('/upload',[\App\Http\Controllers\ImageUploadController::class,'upload']);
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

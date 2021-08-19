@@ -10,6 +10,7 @@ class Image extends Model
 {
     use HasFactory;
     protected $guarded =[];
+
     const RESOLUTIONS=[
             ['width' => 3648, 'height' => 2736],
             ['width' => 1920, 'height' => 1440],
